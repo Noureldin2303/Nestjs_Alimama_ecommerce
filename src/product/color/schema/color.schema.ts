@@ -25,10 +25,10 @@ export class Color {
   @Prop()
   provaImg: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'sizes' })
+  @Prop({ type: Types.ObjectId, ref: 'Size' })
   sizes: Size[];
 
-  @Prop({ type: Types.ObjectId, ref: 'products' })
+  @Prop({ type: Types.ObjectId, ref: 'Product' })
   product: Product;
 }
 

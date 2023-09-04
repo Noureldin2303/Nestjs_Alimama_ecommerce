@@ -16,10 +16,10 @@ export class Size {
   @Prop()
   quantity: number;
 
-  @Prop({ type: Types.ObjectId, ref: 'colors' })
+  @Prop({ type: Types.ObjectId, ref: 'Color' })
   color: Color;
 
-  @Prop({ type: Types.ObjectId, ref: 'products' })
+  @Prop({ type: Types.ObjectId, ref: 'Product' })
   product: Product;
 }
 

@@ -8,20 +8,23 @@ export type ProductDocument = Product & Document;
 
 @Schema({ collection: 'products' })
 export class Product {
+  @Prop({ type: Types.ObjectId, default: () => new Types.ObjectId() })
+  _id: Types.ObjectId;
+
   @Prop()
   name: string;
 
   @Prop()
   description: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'categories' })
+  @Prop({ type: Types.ObjectId, ref: 'Color' })
+  colors: Color[];
+
+  @Prop({ type: Types.ObjectId, ref: 'Category' })
   category: Category;
 
-  @Prop({ type: Types.ObjectId, ref: 'subcategories' })
+  @Prop({ type: Types.ObjectId, ref: 'SubCategory' })
   subCategory: SubCategory;
-
-  @Prop({ type: Types.ObjectId, ref: 'colors' })
-  colors: Color[];
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

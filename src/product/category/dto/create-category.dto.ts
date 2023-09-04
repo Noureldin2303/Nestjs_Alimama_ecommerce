@@ -1,5 +1,5 @@
 export class CreateCategoryDto {
-  name: string;
-  description: string;
-  image: string;
+  readonly name: string;
+  readonly description: string;
+  readonly image: string;
 }

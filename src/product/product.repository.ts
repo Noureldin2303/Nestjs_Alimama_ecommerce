@@ -20,64 +20,138 @@ export class ProductRepository {
     private readonly subcategoryService: SubcategoryService,
   ) {}
 
-  async findAll(): Promise<Product[]> {
-    return this.productModel.find().exec();
+  async findAll(filters: any): Promise<Product[]> {
+    const products = await this.productModel.aggregate([
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'category',
+          foreignField: '_id',
+          as: 'category',
+        },
+      },
+      {
+        $lookup: {
+          from: 'subcategories',
+          localField: 'subCategory',
+          foreignField: '_id',
+          as: 'subCategory',
+        },
+      },
+      {
+        $lookup: {
+          from: 'colors',
+          localField: 'colors',
+          foreignField: '_id',
+          as: 'colors',
+        },
+      },
+      {
+        $lookup: {
+          from: 'sizes',
+          localField: 'colors.sizes',
+          foreignField: '_id',
+          as: 'colors.sizes',
+        },
+      },
+      {
+        $match: filters,
+      },
+    ]);
+
+    return products;
   }
 
-  async findById(id: Types.ObjectId): Promise<Product> {
-    return this.productModel.findById(id).exec();
+  async findById(id: string): Promise<Product> {
+    const product = await this.productModel
+      .find({ _id: new Types.ObjectId(id) })
+      .populate('category subCategory')
+      .populate({
+        path: 'colors',
+        populate: {
+          path: 'sizes',
+          model: 'Size',
+        },
+      })
+      .exec();
+    return product[0];
   }
 
-  async create(product: CreateProductDto): Promise<Product> {
-    const createdProduct = new this.productModel(product);
+  async create(createProductDto: CreateProductDto): Promise<Product> {
+    const createdProduct = new this.productModel(createProductDto);
     await createdProduct.save();
 
     const createdColors = await Promise.all(
-      product.colors.map(async (color: CreateColorDto) => {
+      createProductDto.colors.map(async (color: CreateColorDto) => {
         return await this.colorService.create(color, createdProduct._id);
       }),
     );
 
-    const createdCategory = await this.categoryService.create(product.category);
-
-    const createdSubCategory = await this.subcategoryService.create(
-      product.subCategory,
-      createdCategory._id,
+    const createdCategory = await this.categoryService.findByName(
+      createProductDto.category,
     );
 
-    const newproduct: StoreProductDto = {
-      ...product,
+    const createdSubcategory = await this.subcategoryService.findByName(
+      createProductDto.subCategory,
+      createProductDto.category,
+    );
+
+    const storeProduct: StoreProductDto = {
+      ...createProductDto,
       category: createdCategory._id,
-      subCategory: createdSubCategory._id,
+      subCategory: createdSubcategory._id,
       colors: createdColors.map((color) => color._id),
     };
-    const updatedProduct = await this.productModel.findByIdAndUpdate(
+
+    const updatedProduct = await this.productModel.findOneAndUpdate(
       createdProduct._id,
-      newproduct,
+      storeProduct,
       { new: true },
     );
+
     return updatedProduct;
   }
 
   async update(
-    id: Types.ObjectId,
-    product: UpdateProductDto,
+    product: string,
+    updateProductDto: UpdateProductDto,
   ): Promise<Product> {
-    return this.productModel
-      .findByIdAndUpdate(id, product, { new: true })
+    await this.colorService.deleteByProduct(product);
+
+    const newColors = await Promise.all(
+      updateProductDto.colors.map(async (color: CreateColorDto) => {
+        return await this.colorService.create(color, product);
+      }),
+    );
+
+    const newCategory = await this.categoryService.findByName(
+      updateProductDto.category,
+    );
+    const newSubCategory = await this.subcategoryService.findByName(
+      updateProductDto.subCategory,
+      updateProductDto.category,
+    );
+
+    const updatedProduct: StoreProductDto = {
+      name: updateProductDto.name,
+      description: updateProductDto.description,
+      category: newCategory._id,
+      subCategory: newSubCategory._id,
+      colors: newColors.map((color) => color._id),
+    };
+
+    return await this.productModel
+      .findOneAndUpdate(
+        { _id: new Types.ObjectId(product) },
+        { $set: updatedProduct },
+        { new: true },
+      )
       .exec();
   }
 
-  async updateWithPatch(
-    id: Types.ObjectId,
-    product: UpdateProductDto,
-  ): Promise<Product> {
-    return this.productModel
-      .findByIdAndUpdate(id, { $set: product }, { new: true })
+  async delete(id: string): Promise<void> {
+    await this.productModel
+      .findOneAndDelete({ _id: new Types.ObjectId(id) })
       .exec();
-  }
-
-  async delete(id: Types.ObjectId): Promise<void> {
-    await this.productModel.findByIdAndDelete(id).exec();
   }
 }
