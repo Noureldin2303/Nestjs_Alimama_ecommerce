@@ -2,8 +2,6 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
 
   <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
     <p align="center">
@@ -19,12 +17,6 @@
     <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
   <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
 
@@ -58,15 +50,349 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+# Project: MAKASK 👩‍🚀
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Collection: `product` 📁
 
-## Stay in touch
+## Product Endpoints 🧙‍♂️
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Get All Products ( `Method: GET` )
+
+> ```
+> domain/product
+> ```
+
+### Get Single Product ( `Method: GET` )
+
+> ```
+> domain/product/:id
+> ```
+
+### Create Product ( `Method: POST` )
+
+> ```
+> domain/product/
+> ```
+
+### Body (**raw**)
+
+```json
+{
+  "name": "testduct",
+  "category": {
+    "name": "Men",
+    "description": "description category",
+    "image": "images"
+  },
+  "subCategory": {
+    "name": "pants",
+    "description": "description subcategory",
+    "image": "images"
+  },
+  "description": "description",
+  "colors": [
+    {
+      "name": "yellow",
+      "hex": "#090907",
+      "sizes": [
+        {
+          "name": "s",
+          "quantity": 120
+        },
+        {
+          "name": "l",
+          "quantity": 20
+        }
+      ],
+      "price": 321,
+      "images": ["img1"],
+      "provaImg": "img1"
+    }
+  ]
+}
+```
+
+### Update Product ( `Method: PUT` )
+
+> ```
+> domain/product/:id
+> ```
+
+### Body (**raw**)
+
+```json
+{
+  "name": "product 7",
+  "category": {
+    "name": "Men2",
+    "description": "description",
+    "image": "images2"
+  },
+  "subCategory": {
+    "name": "T-shirts",
+    "description": "description",
+    "image": "images"
+  },
+  "description": "description",
+  "colors": [
+    {
+      "name": "blue",
+      "hex": "#isbvibv",
+      "sizes": [
+        {
+          "name": "l",
+          "quantity": 12
+        }
+      ],
+      "price": 321,
+      "images": ["img1", "img2"],
+      "provaImg": "img1"
+    },
+    {
+      "name": "red",
+      "hex": "#32636262",
+      "sizes": [
+        {
+          "name": "xl",
+          "quantity": 120
+        }
+      ],
+      "price": 235,
+      "images": ["img1"],
+      "provaImg": "img1"
+    }
+  ]
+}
+```
+
+### Delete Product ( `Method: DELETE` )
+
+> ```
+> domain/product/:id
+> ```
+
+<br/><br/>
+
+## Category Endpoints 🧙‍♂️
+
+### Get All Category ( `Method: GET` )
+
+> ```
+> domain/category
+> ```
+
+### Get Single Category ( `Method: GET` )
+
+> ```
+> domain/category/:id
+> ```
+
+### Delete Category ( `Method: DELETE` )
+
+> ```
+> domain/category/:id
+> ```
+
+### Update Category ( `Method: PUT` )
+
+> ```
+> domain/category/:id
+> ```
+
+### Body (**raw**)
+
+```json
+{
+  "name": "Men",
+  "description": "description men category",
+  "image": "image men category update"
+}
+```
+
+### Create Category ( `Method: POST` )
+
+> ```
+> domain/category
+> ```
+
+### Body (**raw**)
+
+```json
+{
+  "name": "Women",
+  "description": "description women category",
+  "image": "image women category"
+}
+```
+
+### Get Category By name ( `Method: GET` )
+
+> ```
+> domain/category/name/Women
+> ```
+
+<br/><br/>
+
+## SubCategory Endpoints 🧙‍♂️
+
+### Create Subcategory ( `Method: POST` )
+
+> ```
+> domain/subcategory
+> ```
+
+### Body (**raw**)
+
+```json
+{
+  "name": "pants",
+  "description": "description tshirts subcategory",
+  "image": "image tshirts subcategory",
+  "category": "Kids"
+}
+```
+
+### Get All Subcategory ( `Method: GET` )
+
+> ```
+> domain/subcategory
+> ```
+
+### Get Single Subcategory ( `Method: GET` )
+
+> ```
+> domain/subcategory/:id
+> ```
+
+### Update Subcategory ( `Method: PUT` )
+
+> ```
+> domain/subcategory/:id
+> ```
+
+### Body (**raw**)
+
+```json
+{
+  "name": "sweatshirts",
+  "description": "description tshirts subcategory",
+  "image": "image tshirts subcategory update"
+}
+```
+
+### Delete Subcategory ( `Method: DELETE` )
+
+> ```
+> domain/subcategory/:id
+> ```
+
+### Get Subcategory By Name ( `Method: GET` )
+
+> ```
+> domain/subcategory/sweatshirts
+> ```
+
+<br/><br/>
+
+## Colors Endpoints 🧙‍♂️
+
+### Get All Colors ( `Method: GET` )
+
+> ```
+> domain/color
+> ```
+
+### Get By Name ( `Method: GET` )
+
+> ```
+> domain/color/name/purple
+> ```
+
+### Get By Product ( `Method: GET` )
+
+> ```
+> domain/color/product/:id
+> ```
+
+### Get By id ( `Method: GET` )
+
+> ```
+> domain/color/:id
+> ```
+
+### Delete Color ( `Method: DELETE` )
+
+> ```
+> domain/color/:id
+> ```
+
+### Update Color ( `Method: PUT` )
+
+> ```
+> domain/color/:id
+> ```
+
+### Body (**raw**)
+
+```json
+{
+  "name": "black",
+  "hex": "#000000",
+  "price": 30,
+  "images": ["img1", "img2", "img3"],
+  "provaImg": "prova image"
+}
+```
+
+<br/><br/>
+
+## Sizes Endpoints 🧙‍♂️
+
+### Get All Sizes ( `Method: GET` )
+
+> ```
+> domain/size
+> ```
+
+### Get By id ( `Method: GET` )
+
+> ```
+> domain/size/:id
+> ```
+
+### Get By Color ( `Method: GET` )
+
+> ```
+> domain/size/color/:id
+> ```
+
+### Get By Name ( `Method: GET` )
+
+> ```
+> domain/size/name/s
+> ```
+
+### Update Size ( `Method: PUT` )
+
+> ```
+> domain/size/:id
+> ```
+
+### Body (**raw**)
+
+```json
+{
+  "name": "s",
+  "quantity": 20
+}
+```
+
+### Delete Size ( `Method: DELETE` )
+
+> ```
+> domain/size/:id
+> ```
+
 
 ## License
 
