@@ -13,17 +13,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { FilterProductDto } from './dto/filter-product-dto';
 
-export interface filterQuery {
-  category: string;
-  subcategory: string;
-  color: string;
-  size: string;
-  minprice: number;
-  maxprice: number;
-  search: string;
-}
-
-@Controller('product')
+@Controller('api/v1/product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 

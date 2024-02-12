@@ -1,10 +1,19 @@
+import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
 import { CreateSizeDto } from '../../size/dto/create-size.dto';
 
 export class CreateColorDto {
-  name: string;
-  hex: string;
-  price: number;
-  images: string[];
-  provaImg: string;
-  sizes: CreateSizeDto[];
+  @IsString()
+  @IsNotEmpty()
+  readonly name: string;
+  @IsString()
+  @IsNotEmpty()
+  readonly hex: string;
+  @IsNotEmpty()
+  @IsNumber()
+  readonly price: number;
+  readonly images: string[];
+  @IsString()
+  @IsNotEmpty()
+  readonly provaImg: string;
+  readonly sizes: CreateSizeDto[];
 }

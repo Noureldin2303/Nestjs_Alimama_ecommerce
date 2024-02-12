@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSubCategoryDto } from './dto/create-subcategory.dto';
 import { SubCategoryRepository } from './subcategory.repository';
 import { UpdateSubCategoryDto } from './dto/update-subcategory.dto';
@@ -12,6 +12,10 @@ export class SubcategoryService {
   }
 
   async findById(id: string) {
+    const subCategory = await this.subCategoryRepository.findById(id);
+    if (!subCategory) {
+      throw new NotFoundException(`Category #${id} not found`);
+    }
     return await this.subCategoryRepository.findById(id);
   }
 
@@ -24,10 +28,18 @@ export class SubcategoryService {
   }
 
   async update(id: string, subCategory: UpdateSubCategoryDto) {
+    const subCategoryExists = await this.subCategoryRepository.findById(id);
+    if (!subCategoryExists) {
+      throw new NotFoundException(`Category #${id} not found`);
+    }
     return await this.subCategoryRepository.update(id, subCategory);
   }
 
   async delete(id: string) {
+    const subCategory = await this.subCategoryRepository.findById(id);
+    if (!subCategory) {
+      throw new NotFoundException(`Category #${id} not found`);
+    }
     return await this.subCategoryRepository.delete(id);
   }
 }

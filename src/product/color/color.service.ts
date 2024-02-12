@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ColorRepository } from './color.repository';
 import { CreateColorDto } from './dto/create-color.dto';
 import { UpdateColorDto } from './dto/update-color.dto';
@@ -16,7 +16,11 @@ export class ColorService {
   }
 
   async findById(id: string) {
-    return this.colorRepository.findById(id);
+    const color = await this.colorRepository.findById(id);
+    if (!color) {
+      throw new NotFoundException(`Color #${id} not found`);
+    }
+    return color;
   }
 
   async findByProduct(id: string) {
@@ -28,6 +32,10 @@ export class ColorService {
   }
 
   async update(id: string, color: UpdateColorDto) {
+    const colorExists = await this.colorRepository.findById(id);
+    if (!colorExists) {
+      throw new NotFoundException(`Color #${id} not found`);
+    }
     return this.colorRepository.update(id, color);
   }
 
@@ -36,6 +44,10 @@ export class ColorService {
   }
 
   async delete(id: string) {
+    const color = await this.colorRepository.findById(id);
+    if (!color) {
+      throw new NotFoundException(`Color #${id} not found`);
+    }
     return this.colorRepository.delete(id);
   }
 }

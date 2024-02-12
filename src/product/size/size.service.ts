@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { SizeRepository } from './size.repository';
 import { CreateSizeDto } from './dto/create-size.dto';
 import { Types } from 'mongoose';
@@ -17,7 +17,11 @@ export class SizeService {
   }
 
   async findById(id: string) {
-    return this.sizeRepository.findById(id);
+    const size = await this.sizeRepository.findById(id);
+    if (!size) {
+      throw new NotFoundException(`Category #${id} not found`);
+    }
+    return size;
   }
 
   async findByColor(id: string) {
@@ -29,6 +33,10 @@ export class SizeService {
   }
 
   async update(id: string, size: UpdateSizeDto) {
+    const sizeExists = await this.sizeRepository.findById(id);
+    if (!sizeExists) {
+      throw new NotFoundException(`Category #${id} not found`);
+    }
     return this.sizeRepository.update(id, size);
   }
 
@@ -37,6 +45,10 @@ export class SizeService {
   }
 
   async delete(id: string) {
+    const size = await this.sizeRepository.findById(id);
+    if (!size) {
+      throw new NotFoundException(`Category #${id} not found`);
+    }
     return this.sizeRepository.delete(id);
   }
 }
