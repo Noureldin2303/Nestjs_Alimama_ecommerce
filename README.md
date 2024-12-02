@@ -1,5 +1,6 @@
-# Project: MAKASK 👩‍🚀
+# Project: Alimama 🐧
 
+[![Technologies](https://skillicons.dev/icons?i=ts,nestjs,mongodb)](https://skillicons.dev)
 
 ## Installation
 
@@ -175,4 +176,4 @@ orders: {
 },
   ```
 
-### Still in development....... 🤯
+### Still under development....... 🤯
